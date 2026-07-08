@@ -1,0 +1,9 @@
+html, body {
+  margin: 0;
+  padding: 0;
+  background-image: url("games.png");
+}
+main {
+  margin: auto;
+  max-width: max-content;
+}
