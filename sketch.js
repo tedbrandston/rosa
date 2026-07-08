@@ -454,7 +454,7 @@ function turn(dir) {
 
 function mouseClicked(evt) {
   DIFFICULTY_BTNS.forEach((btn, difficulty) => {
-    if (dist(evt.x, evt.y, btn.x, btn.y) < DIFFICULTY_BTN_RADIUS && GAME_STATE.difficulty !== difficulty) {
+    if (dist(mouseX, mouseY, btn.x, btn.y) < DIFFICULTY_BTN_RADIUS && GAME_STATE.difficulty !== difficulty) {
       GAME_STATE.difficulty = difficulty;
       resetGame();
     }
