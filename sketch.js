@@ -76,8 +76,8 @@ function resetGame() {
       break;
   }
   FOOD = new Map();
-  Array(num_mangos).keys().forEach(() => addFood(MANGO));
-  Array(num_baloney).keys().forEach(() => addFood(BALONEY));
+  Array(num_mangos).keys().forEach(() => addFood([MANGO]));
+  Array(num_baloney).keys().forEach(() => addFood([BALONEY]));
   
   setUpSpeech();
   
@@ -171,20 +171,22 @@ function startFadingOpposite(opposite_type) {
   }
 }
 
-function addFood(type) {
+function addFood(type_options) {
+  if (!type_options) {
+    // Equal chance to pick any;
+    type_options = [MANGO, BALONEY, BLOCK]
+  }
+
   const px = floor(random(POSITIONS_WIDE));
   const py = floor(random(POSITIONS_HIGH));
   const pos_key = keyFor(px, py);
   
   if (FOOD.has(pos_key)) {
     // There's already food here, try a new location;
-    return addFood(type);
+    return addFood(type_options);
   }
   
-  if (!type) {
-    // Equal chance to pick any;
-    type = [MANGO, BALONEY, BLOCK][floor(random(3))];
-  }
+  type = type_options[floor(random(type_options.length))];
   
   let food_image;
   if (type === MANGO) {
@@ -208,8 +210,21 @@ function addFood(type) {
   return type;
 }
 
+function edibleFood() {
+  for (const food of FOOD.values()) {
+    if (food.type === MANGO || food.type === BLOCK) {
+      return true;
+    }
+}
+  // for (let food in FOOD.values()) {
+  // }
+  return false;
+}
+
 function maybeAddFood() {
-  if (random() < FOOD_CHANCE) {
+  if(!edibleFood()) {
+    addFood([MANGO, BLOCK]);
+  } else if (random() < FOOD_CHANCE) {
     const type = addFood();
     startFadingOpposite(type);
   }
